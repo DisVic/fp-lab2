@@ -1,3 +1,4 @@
+// events.js (INTENTIONAL BUG: submit causes full page reload)
 import { saveUsername, saveTodo } from './storage.js';
 import { DisplayTodos } from './dom.js';
 
@@ -10,7 +11,9 @@ export function initializeEventListeners() {
     nameInput.addEventListener('change', (e) => saveUsername(e.target.value));
 
     newTodoForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+        // BUG: намеренно убрано preventDefault -> браузер выполнит submit и перезагрузит страницу
+        // e.preventDefault();
+
         const todo = {
             content: e.target.elements.content.value,
             category: e.target.elements.category.value,

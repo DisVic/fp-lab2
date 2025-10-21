@@ -1,9 +1,10 @@
+// dom.js (INTENTIONAL BUG: checkbox always toggles the FIRST todo in the array)
 import { getTodos } from './storage.js';
 
 export function DisplayTodos() {
     const todoList = document.querySelector('#todo-list');
     todoList.innerHTML = "";
-    const todos = getTodos();
+    const todos = getTodos() || [];
 
     todos.forEach(todo => {
         const todoItem = document.createElement('div');
@@ -46,11 +47,19 @@ export function DisplayTodos() {
             todoItem.classList.add('done');
         }
 
+        // ===== INTENTIONAL BUG =====
+        // Вместо того, чтобы изменять именно текущую задачу (todo),
+        // мы нечаянно изменяем всегда первый элемент массива todos.
+        // Это означает: нажатие чекбокса у любой заметки переключает только первую заметку.
         input.addEventListener('change', () => {
-            todo.done = input.checked;
+            // BUG: изменяем todos[0] вместо todo
+            if (todos.length > 0) {
+                todos[0].done = input.checked;
+            }
             localStorage.setItem('todos', JSON.stringify(todos));
             DisplayTodos();
         });
+        // ============================
 
         edit.addEventListener('click', () => {
             const inputField = content.querySelector('input');

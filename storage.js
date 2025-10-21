@@ -1,5 +1,7 @@
+// storage.js (INTENTIONAL BUG: username saved under wrong key)
 export function saveUsername(username) {
-    localStorage.setItem('username', username);
+    // BUG: сохраняем под ключом 'user' вместо 'username'
+    localStorage.setItem('user', username);
 }
 
 export function saveTodo(todo) {
